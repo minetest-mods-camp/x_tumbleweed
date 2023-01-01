@@ -24,7 +24,12 @@ XTumbleweed = {
         abr = minetest.get_mapgen_setting('active_block_range') or 4 --[[@as number]]
     },
     spawn_reduction = 0.5,
-    spawn_rate = 0.5
+    spawn_rate = 0.5,
+    allowed_biomes = {
+        'desert',
+        'sandstone_desert',
+        'cold_desert'
+    }
 }
 
 ---Check if indexed table contains a value
@@ -333,14 +338,8 @@ function XTumbleweed.globalstep(self, dtime)
 
         local objs = minetest.get_objects_inside_radius(spawnpos, abr * 16 * 1.1)
         local tumbleweed_counter = 0
-        local allowed_biomes = {
-            'desert',
-            'sandstone_desert',
-            'cold_desert',
-            'crystal_forest'
-        }
 
-        if not tableContains(allowed_biomes, biome_name) then
+        if not tableContains(self.allowed_biomes, biome_name) then
             return
         end
 
