@@ -1,0 +1,17 @@
+{
+    "type": "MOD",
+    "title": "X Tumbleweed",
+    "name": "x_tumbleweed",
+    "short_description": "Adds Tumbleweed.",
+    "dev_state": "MAINTENANCE_ONLY",
+    "tags": [
+        "survival",
+        "mobs",
+        "decorative",
+        "environment"
+    ],
+    "license": "LGPL-2.1-or-later",
+    "media_license": "CC-BY-SA-4.0",
+    "repo": "https://bitbucket.org/minetest_gamers/x_tumbleweed/src/master/",
+    "issue_tracker": "https://bitbucket.org/minetest_gamers/x_tumbleweed/issues?status=new&status=open"
+}
