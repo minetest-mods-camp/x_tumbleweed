@@ -29,6 +29,9 @@ XTumbleweed = {
         'desert',
         'sandstone_desert',
         'cold_desert'
+    },
+    sounds = {
+        neutral = 'x_tumbleweed_tumbleweed'
     }
 }
 
@@ -264,6 +267,12 @@ function XTumbleweed.brainfunc(self, selfObj)
         else
             mobkit.lq_dumbjump(selfObj, 1.3, 'walk')
 
+            -- minetest.sound_play({
+            --     name = self.sounds.neutral
+            -- }, {
+            --     object = selfObj.object
+            -- })
+
             minetest.add_particlespawner({
                 amount = 6,
                 time = 0.5,
@@ -305,6 +314,12 @@ end
 ---@diagnostic disable-next-line: unused-local
 function XTumbleweed.on_punch(self, selfObj, puncher, time_from_last_punch, tool_capabilities, dir)
     if mobkit.is_alive(selfObj) then
+        minetest.sound_play({
+            name = self.sounds.neutral
+        }, {
+            object = selfObj.object
+        })
+
         local hvel = vector.multiply(vector.normalize({ x = dir.x, y = 0, z = dir.z }), 4)
         selfObj._puncher = puncher
         selfObj.object:set_velocity({ x = hvel.x, y = 2, z = hvel.z })

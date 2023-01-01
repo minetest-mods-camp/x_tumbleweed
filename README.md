@@ -6,7 +6,7 @@ Adds tumbleweed.
 
 ## Features
 
-* spawns in deser, sandstone desert and cold deser by default
+* spawns in desert, sandstone desert and cold desert by default
 * have a ~33% change to split down to smaller tumbleweeds when broken
 * drops decoration items from the biome where it was broken
 * has various sizes and textures
@@ -45,7 +45,11 @@ GNU Lesser General Public License v2.1 or later (see included LICENSE file)
 
 ### Sounds
 
--
+**CC-BY-4.0, by duckduckpony**, https://freesound.org
+
+- x_tumbleweed_tumbleweed.1.ogg
+- x_tumbleweed_tumbleweed.2.ogg
+- x_tumbleweed_tumbleweed.3.ogg
 
 ## Installation
 
