@@ -10,6 +10,7 @@ Adds tumbleweed.
 * have a ~33% change to split down to smaller tumbleweeds when broken
 * drops decoration items from the biome where it was broken
 * has various sizes and textures
+* punching the tumbleweed will make it change direction
 
 ## Dependencies
 
