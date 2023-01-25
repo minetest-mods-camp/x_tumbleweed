@@ -216,22 +216,38 @@ function XTumbleweed.brainfunc(self, selfObj)
                 local chance = math.random(1, tool_capabilities.max_drop_level)
 
                 for _ = 1, math.random(3) do
-                    local stack = ItemStack({
-                        name = registered_decorations_filtered[math.random(#registered_decorations_filtered)],
-                        count = math.random(3) * chance
-                    })
+                    local stack_name = registered_decorations_filtered[1]
 
-                    local stack_obj = minetest.add_item(
-                        { x = pos_after.x, y = pos_after.y + 1, z = pos_after.z },
-                        stack
-                    )
+                    if #registered_decorations_filtered > 1 then
+                        local rand_num = math.random(1, #registered_decorations_filtered)
+                        stack_name = registered_decorations_filtered[rand_num]
+                    end
 
-                    if stack_obj then
-                        stack_obj:set_velocity({
-                            x = math.random(-1, 1),
-                            y = 2,
-                            z = math.random(-1, 1),
+                    if type(stack_name) == 'table' then
+                        if stack_name.items then
+                            local random_item = stack_name.items[math.random(1, #stack_name.items)]
+                            stack_name = random_item.items[math.random(1, #random_item.items)]
+                        end
+                    end
+
+                    if type(stack_name) == 'string' then
+                        local stack = ItemStack({
+                            name = stack_name,
+                            count = math.random(3) * chance
                         })
+
+                        local stack_obj = minetest.add_item(
+                            { x = pos_after.x, y = pos_after.y + 1, z = pos_after.z },
+                            stack
+                        )
+
+                        if stack_obj then
+                            stack_obj:set_velocity({
+                                x = math.random(-1, 1),
+                                y = 2,
+                                z = math.random(-1, 1),
+                            })
+                        end
                     end
                 end
             end
