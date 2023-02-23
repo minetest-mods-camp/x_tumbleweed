@@ -12,6 +12,26 @@ Adds tumbleweed.
 * has various sizes and textures
 * punching the tumbleweed will make it change direction
 
+## API
+
+Class
+
+`XTumbleweed`
+
+Methods
+
+    `add_allowed_biome(biomes: string[])` Add biome names to XTumbleweed allowed biomes list so the tumbleweed can spawn in them.
+
+example
+```
+    XTumbleweed:add_allowed_biome({
+        'everness_forsaken_desert',
+        'everness_forsaken_desert_ocean',
+        'everness_forsaken_desert_under',
+        'everness_baobab_savanna'
+    })
+```
+
 ## Dependencies
 
 - mobkit
