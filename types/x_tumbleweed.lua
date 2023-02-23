@@ -9,3 +9,4 @@
 ---@field brainfunc fun(self: XTumbleweed, selfObj: table)
 ---@field on_punch fun(self: table, selfObj: table,  puncher: ObjectRef|nil, time_from_last_punch: number|integer|nil, tool_capabilities: ToolCapabilitiesDef|nil, dir: Vector, damage: number|integer): boolean|nil
 ---@field globalstep fun(self: XTumbleweed, dtime: number|integer)
+---@field allowed_biomes string[]

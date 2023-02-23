@@ -114,7 +114,7 @@ function XTumbleweed.brainfunc(self, selfObj)
         mobkit.hq_die(selfObj)
 
         -- multiply
-        if math.random(3) == 3 and not selfObj.isinliquid and not selfObj.is_child then
+        if math.random(1, 3) == 3 and not selfObj.isinliquid and not selfObj.is_child then
             local angle, posadd
             angle = math.random(0, math.pi * 2)
 
@@ -168,11 +168,8 @@ function XTumbleweed.brainfunc(self, selfObj)
                 texture = 'x_tumbleweed_death_particle_animated.png',
                 animation = {
                     type = 'vertical_frames',
-                    -- Width of a frame in pixels
                     aspect_w = 16,
-                    -- Height of a frame in pixels
                     aspect_h = 16,
-                    -- Full loop length
                     length = 1,
                 },
             })
@@ -192,20 +189,42 @@ function XTumbleweed.brainfunc(self, selfObj)
                 local registered_decorations_filtered = { 'default:stick' }
 
                 for _, v in pairs(minetest.registered_decorations) do
+                    local registered_biome_names = v.biomes
+
+                    if type(registered_biome_names) == 'string' then
+                        registered_biome_names = { registered_biome_names }
+                    end
+
                     ---only for 'simple' decoration types
                     if v.deco_type == 'simple' then
                         ---filter based on biome name in `biomes` table and node name in `place_on` table
-                        if tableContains(v.biomes, biome_name) then
-                            local item_name = v.name
+                        if tableContains(registered_biome_names, biome_name) then
+                            local item_names = v.decoration
 
-                            if minetest.registered_nodes[v.name] and minetest.registered_nodes[v.name].drop then
-                                item_name = minetest.registered_nodes[v.name].drop
-                            elseif minetest.registered_items[v.name] and minetest.registered_items[v.name].drop then
-                                item_name = minetest.registered_items[v.name].drop
+                            if type(item_names) == 'string' then
+                                item_names = { item_names }
                             end
 
-                            if not tableContains(registered_decorations_filtered, item_name) then
-                                table.insert(registered_decorations_filtered, item_name)
+                            for _, item_name in ipairs(item_names) do
+                                local item_name_result = item_name
+
+                                if minetest.registered_nodes[item_name_result] and minetest.registered_nodes[item_name_result].drop then
+                                    item_name_result = minetest.registered_nodes[item_name_result].drop
+                                elseif minetest.registered_items[item_name_result] and minetest.registered_items[item_name_result].drop then
+                                    item_name_result = minetest.registered_items[item_name_result].drop
+                                end
+
+                                if type(item_name_result) == 'table' then
+                                    if item_name_result.items then
+                                        local random_item = item_name_result.items[math.random(1, #item_name_result.items)]
+
+                                        item_name_result = random_item.items[math.random(1, #random_item.items)]
+                                    end
+                                end
+
+                                if not tableContains(registered_decorations_filtered, item_name_result) then
+                                    table.insert(registered_decorations_filtered, item_name_result)
+                                end
                             end
                         end
                     end
@@ -215,7 +234,7 @@ function XTumbleweed.brainfunc(self, selfObj)
                 local tool_capabilities = wield_stack:get_tool_capabilities()
                 local chance = math.random(1, tool_capabilities.max_drop_level)
 
-                for _ = 1, math.random(3) do
+                for _ = 1, math.random(1, 3) do
                     local stack_name = registered_decorations_filtered[1]
 
                     if #registered_decorations_filtered > 1 then
@@ -223,19 +242,11 @@ function XTumbleweed.brainfunc(self, selfObj)
                         stack_name = registered_decorations_filtered[rand_num]
                     end
 
-                    if type(stack_name) == 'table' then
-                        if stack_name.items then
-                            local random_item = stack_name.items[math.random(1, #stack_name.items)]
-                            stack_name = random_item.items[math.random(1, #random_item.items)]
-                        end
-                    end
-
                     if type(stack_name) == 'string' then
                         local stack = ItemStack({
                             name = stack_name,
                             count = math.random(3) * chance
                         })
-
                         local stack_obj = minetest.add_item(
                             { x = pos_after.x, y = pos_after.y + 1, z = pos_after.z },
                             stack
@@ -395,7 +406,7 @@ function XTumbleweed.globalstep(self, dtime)
         local obj = minetest.add_entity({ x = spawnpos.x, y = spawnpos.y + 0.5, z = spawnpos.z }, mobname)
 
         if obj then
-            local yaw = math.rad(math.random(360))
+            local yaw = math.rad(math.random(1, 360))
             local rand_num = math.random(50, 150) / 100
 
             obj:set_yaw(yaw)
@@ -421,5 +432,15 @@ function XTumbleweed.globalstep(self, dtime)
             'action',
             '[x_tumbleweed] Spawned ' .. mobname .. ' at ' .. minetest.pos_to_string(spawnpos)
         )
+    end
+end
+
+function XTumbleweed.add_allowed_biome(self, biomes)
+    if not biomes or type(biomes) ~= 'table' then
+        return
+    end
+
+    for _, biome_name in ipairs(biomes) do
+        table.insert(self.allowed_biomes, biome_name)
     end
 end
