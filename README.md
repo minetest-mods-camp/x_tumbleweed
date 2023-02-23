@@ -20,16 +20,18 @@ Class
 
 Methods
 
-    `add_allowed_biome(biomes: string[])` Add biome names to XTumbleweed allowed biomes list so the tumbleweed can spawn in them.
+`add_allowed_biomes(biomes: string[]): void`
+
+Add biome names to XTumbleweed allowed biomes list so the tumbleweed can spawn in them.
 
 example
-```
-    XTumbleweed:add_allowed_biome({
-        'everness_forsaken_desert',
-        'everness_forsaken_desert_ocean',
-        'everness_forsaken_desert_under',
-        'everness_baobab_savanna'
-    })
+```lua
+XTumbleweed:add_allowed_biomes({
+    'everness_forsaken_desert',
+    'everness_forsaken_desert_ocean',
+    'everness_forsaken_desert_under',
+    'everness_baobab_savanna'
+})
 ```
 
 ## Dependencies

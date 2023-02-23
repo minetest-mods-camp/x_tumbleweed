@@ -435,7 +435,7 @@ function XTumbleweed.globalstep(self, dtime)
     end
 end
 
-function XTumbleweed.add_allowed_biome(self, biomes)
+function XTumbleweed.add_allowed_biomes(self, biomes)
     if not biomes or type(biomes) ~= 'table' then
         return
     end
