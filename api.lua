@@ -441,6 +441,8 @@ function XTumbleweed.add_allowed_biomes(self, biomes)
     end
 
     for _, biome_name in ipairs(biomes) do
-        table.insert(self.allowed_biomes, biome_name)
+        if not tableContains(self.allowed_biomes, biome_name) then
+            table.insert(self.allowed_biomes, biome_name)
+        end
     end
 end
