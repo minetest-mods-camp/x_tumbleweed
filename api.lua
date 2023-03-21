@@ -65,6 +65,7 @@ function XTumbleweed.register_entity(self, name, def)
         physical = true,
         collide_with_objects = true,
         collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+        selectionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, rotate = true },
         visual = 'mesh',
         mesh = 'x_tumbleweed_tumbleweed.b3d',
         textures = { 'x_tumbleweed_tumbleweed_1.png' },
@@ -141,6 +142,15 @@ function XTumbleweed.brainfunc(self, selfObj)
                             0.5 * 0.5,
                             0.5 * 0.5,
                             0.5 * 0.5
+                        },
+                        selectionbox = {
+                            -0.5 * 0.5,
+                            -0.5 * 0.5,
+                            -0.5 * 0.5,
+                            0.5 * 0.5,
+                            0.5 * 0.5,
+                            0.5 * 0.5,
+                            rotate = true
                         }
                     })
                     obj:set_yaw(angle - math.pi / 2)
@@ -294,12 +304,6 @@ function XTumbleweed.brainfunc(self, selfObj)
         else
             mobkit.lq_dumbjump(selfObj, 1.3, 'walk')
 
-            -- minetest.sound_play({
-            --     name = self.sounds.neutral
-            -- }, {
-            --     object = selfObj.object
-            -- })
-
             minetest.add_particlespawner({
                 amount = 6,
                 time = 0.5,
@@ -405,13 +409,31 @@ function XTumbleweed.globalstep(self, dtime)
         local mobname = 'x_tumbleweed:tumbleweed'
         local obj = minetest.add_entity({ x = spawnpos.x, y = spawnpos.y + 0.5, z = spawnpos.z }, mobname)
 
+        -- camouflage texture
+        local spawn_node = minetest.get_node(vector.new(spawnpos.x, spawnpos.y - 1, spawnpos.z))
+        local spawn_node_def = minetest.registered_nodes[spawn_node.name]
+        local tex = spawn_node_def.tiles
+
+        if spawn_node_def and spawn_node_def.walkable then
+            if type(tex) == 'table' then
+                tex = spawn_node_def.tiles[1]
+            end
+
+            if type(tex) == 'table' then
+                tex = tex[1].name
+            end
+
+            if tex then
+                tex = tex .. '^[mask:x_tumbleweed_tumbleweed_mask_' .. math.random(1, 3) .. '.png'
+            end
+        end
+
+
         if obj then
             local yaw = math.rad(math.random(1, 360))
             local rand_num = math.random(50, 150) / 100
-
-            obj:set_yaw(yaw)
-
-            obj:set_properties({
+            local rand = PcgRandom(spawnpos.x * spawnpos.y * spawnpos.z)
+            local obj_properties = {
                 visual_size = {
                     x = 1 * rand_num,
                     y = 1 * rand_num,
@@ -424,8 +446,25 @@ function XTumbleweed.globalstep(self, dtime)
                     0.5 * rand_num,
                     0.5 * rand_num,
                     0.5 * rand_num
+                },
+                selectionbox = {
+                    -0.5 * rand_num,
+                    -0.5 * rand_num,
+                    -0.5 * rand_num,
+                    0.5 * rand_num,
+                    0.5 * rand_num,
+                    0.5 * rand_num,
+                    rotate = true
                 }
-            })
+            }
+
+            -- camouflage texture
+            if tex and rand:next(0, 100) < 25 then
+                obj_properties.textures = { tex }
+            end
+
+            obj:set_yaw(yaw)
+            obj:set_properties(obj_properties)
         end
 
         minetest.log(

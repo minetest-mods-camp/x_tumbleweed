@@ -59,6 +59,9 @@ GNU Lesser General Public License v2.1 or later (see included LICENSE file)
 - x_tumbleweed_tumbleweed_1.png
 - x_tumbleweed_tumbleweed_2.png
 - x_tumbleweed_tumbleweed_3.png
+- x_tumbleweed_tumbleweed_mask_1.png
+- x_tumbleweed_tumbleweed_mask_2.png
+- x_tumbleweed_tumbleweed_mask_3.png
 
 ### Models
 
