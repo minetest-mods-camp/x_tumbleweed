@@ -419,8 +419,8 @@ function XTumbleweed.globalstep(self, dtime)
                 tex = spawn_node_def.tiles[1]
             end
 
-            if type(tex) == 'table' then
-                tex = tex[1].name
+            if type(tex) == 'table' and (tex[1] or tex.name) then
+                tex = tex[1] and tex[1].name or tex.name
             end
 
             if tex then
